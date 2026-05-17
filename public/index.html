@@ -30,7 +30,7 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--bg);
@@ -631,18 +631,143 @@
     opacity: 0.4;
   }
 
-  /* MOBILE */
+  /* =====================================================
+     MOBILE — TABLET  (≤ 768px)
+     Solo se modifican reglas para pantallas verticales.
+     El layout desktop/laptop NO se toca.
+  ====================================================== */
   @media (max-width: 768px) {
-    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .projects-header { flex-direction: column; align-items: flex-start; }
-    .projects-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+
+    /* --- Nav --- */
     .nav-links { display: none; }
+
+    /* --- Hero --- */
+    #hero {
+      min-height: 100svh;          /* safe-area aware en iOS */
+      align-items: flex-start;
+      padding-top: 100px;          /* espacio bajo nav fijo */
+      padding-bottom: 60px;
+    }
+
+    .hero-content {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /*
+      CORRECCIÓN PRINCIPAL:
+      El clamp original (52px, 8vw, 96px) no baja de 52px, lo que
+      provoca que "Humberto" se desborde en pantallas ~390px.
+      Aquí sobreescribimos con valores apropiados para móvil:
+      – mínimo 28px  |  fluido 9vw (~35px en 390px)  |  máximo 52px
+    */
+    .hero-title {
+      font-size: clamp(28px, 9vw, 52px);
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      margin-top: 1.25rem;
+    }
+
+    .hero-actions {
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .hero-stats {
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding-top: 2rem;
+    }
+
+    .hero-stat-num { font-size: 28px; }
+    .hero-stat-label { font-size: 12px; }
+
+    /* --- Sections --- */
+    section { padding: 70px 5vw; }
+
+    /* --- About --- */
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .about-bio { font-size: 15px; }
+
+    /* --- Projects --- */
+    .projects-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .projects-grid { grid-template-columns: 1fr; }
+
+    .filter-tabs {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      flex: 1 1 auto;
+      text-align: center;
+      padding: 7px 10px;
+    }
+
+    /* --- Stack --- */
     .stack-grid { grid-template-columns: 1fr 1fr; }
+
+    /* --- Contact --- */
+    .contact-links { flex-direction: column; }
+
+    .contact-link {
+      width: 100%;
+      font-size: 13px;
+      /* trunca emails largos sin romper layout */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* --- Footer --- */
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
   }
+
+  /* =====================================================
+     MÓVIL PEQUEÑO  (≤ 480px)
+  ====================================================== */
   @media (max-width: 480px) {
     .stack-grid { grid-template-columns: 1fr; }
+
     .filter-tabs { flex-wrap: wrap; }
+
+    /* Escala ligeramente más pequeña en 320-380px */
+    .hero-title { font-size: clamp(26px, 8.5vw, 44px); }
+
+    /* Award badge: evitar desborde en cards angostas */
+    .award-badge {
+      font-size: 9px;
+      padding: 3px 6px;
+      white-space: normal;
+      line-height: 1.4;
+    }
   }
 </style>
 </head>
@@ -712,7 +837,7 @@
       </p>
       <div class="divider"></div>
       <p style="font-style:italic; font-size:15px; color: var(--text-dim);">
-        "If you're running it twice, we should automate it."
+        "From code to data, and from data to AI"
       </p>
     </div>
     <div class="about-right reveal" style="transition-delay: 0.15s">
@@ -1099,7 +1224,7 @@
 </section>
 
 <footer>
-  <p>© 2026 <strong>Daniel Humberto Reyes Rocha</strong> · </p>
+  <p>© 2026 <strong>Daniel Humberto Reyes Rocha</strong>
   <p style="font-family:var(--font-mono);font-size:11px;">AI Engineer | LLMOps & AI Ops & MLOps | AI Infrastructure</p>
 </footer>
 
